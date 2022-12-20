@@ -11,7 +11,7 @@ def roc(y_true, y_score, ax=None):
     """
     Plot ROC curve.
 
-    Parameters
+    Parameters 
     ----------
     y_true : array-like, shape = [n_samples]
         Correct target values (ground truth).
