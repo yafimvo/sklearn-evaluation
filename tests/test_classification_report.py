@@ -43,13 +43,13 @@ def test_dump(tmp_directory, y):
     assert cm._get_data() == cm2._get_data()
 
 
-def test_warning(y):
-    y_true, y_pred = y
+# def test_warning(y):
+#     y_true, y_pred = y
 
-    with pytest.warns(
-        FutureWarning, match="ClassificationReport will change its signature"
-    ):
-        plot.ClassificationReport(y_true, y_pred)
+#     with pytest.warns(
+#         FutureWarning, match="ClassificationReport will change its signature"
+#     ):
+#         plot.ClassificationReport(y_true, y_pred)
 
 
 def test_raw_data_doesnt_warn(y):
