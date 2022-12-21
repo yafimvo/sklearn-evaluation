@@ -210,15 +210,17 @@ class ROC(Plot):
     @SKLearnEvaluationLogger.log(feature='plot')
     def __init__(self, y_true, y_score,
                  fpr=None, tpr=None, ax=None):
-        if y_true is not None and y_score is not None:
-            warn(
-                "ROC will change its signature in version 0.10"
-                ", please use ROC.from_raw_data",
-                FutureWarning,
-                stacklevel=2,
-            )
-        self.figure = plt.figure()
-        ax = self.figure.add_subplot()
+        # if y_true is not None and y_score is not None:
+        #     warn(
+        #         "ROC will change its signature in version 0.10"
+        #         ", please use ROC.from_raw_data",
+        #         FutureWarning,
+        #         stacklevel=2,
+        #     )
+
+        if ax is None:
+            self.figure = plt.figure()
+            ax = self.figure.add_subplot()
 
         # check data shape?
         if tpr is None or fpr is None:
