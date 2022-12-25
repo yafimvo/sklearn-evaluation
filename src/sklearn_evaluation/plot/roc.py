@@ -117,7 +117,7 @@ def _plot_roc_multi_classification(
         Increasing true positive rates such that element `i` is the true
         positive rate of predictions with score >= `thresholds[i]`
 
-    roc_rates_n_classes : list of dictionaries with 'fpr' and 'tpr'
+    roc_rates_n_classes : list of dictionaries with 'fpr' and 'tpr' keys
         i.e : [{'fpr' : [0.0, 0.2, 0.4, 0.4, 0.6, 1.0],
         'tpr' : [0.0, 0.2, 0.4, 1.0, 1.0, 1.0]}]
 
@@ -183,13 +183,6 @@ class ROC(Plot):
     Plot ROC curve
     Parameters
     ----------
-    y_true : array-like, shape = [n_samples]
-        Correct target values (ground truth).
-
-    y_score : array-like, shape = [n_samples] or [n_samples, 2] for binary
-        classification or [n_samples, n_classes] for multiclass
-        Target scores (estimator predictions).
-
     fpr : ndarray of shape (>2,), default: None
         Increasing false positive rates such that element i is the false
         positive rate of predictions with score >= `thresholds[i]`. If
@@ -200,15 +193,12 @@ class ROC(Plot):
         positive rate of predictions with score >= `thresholds[i]`. If
         None, it will be calculated based on y_true and y_score.
 
+    roc_rates_n_classes : list of dictionaries with 'fpr' and 'tpr' keys
+        i.e : [{'fpr' : [0.0, 0.2, 0.4, 0.4, 0.6, 1.0],
+        'tpr' : [0.0, 0.2, 0.4, 1.0, 1.0, 1.0]}]
+
     ax: matplotlib Axes, default: None
         Axes object to draw the plot onto, otherwise uses current Axes
-
-    Notes
-    -----
-    It is assumed that the y_score parameter columns are in order.
-    For example, if ``y_true = [2, 2, 1, 0, 0, 1, 2]``, then the
-    first column in y_score must contain the scores for class 0,
-    second column for class 1 and so on.
 
     Examples
     --------
@@ -262,7 +252,6 @@ class ROC(Plot):
         fpr = np.array(data["fpr"])
         tpr = np.array(data["tpr"])
         roc_rates_n_classes = data["roc_rates_n_classes"]
-        # roc_rates_n_classes = None
 
         return cls(fpr, tpr, roc_rates_n_classes, ax=None)
 
