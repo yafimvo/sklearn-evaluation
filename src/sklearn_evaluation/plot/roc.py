@@ -39,7 +39,13 @@ def roc(y_true, y_score, ax=None):
     .. plot:: ../examples/roc.py
 
     """
-    # r = ROC(y_true, y_score, ax=ax)
+    if y_true is not None and y_score is not None:
+        warn(
+            "ROC will change its signature in version 0.10"
+            ", please use ROC.from_raw_data",
+            FutureWarning,
+            stacklevel=2,
+        )
     r = ROC.from_raw_data(y_true, y_score, ax=ax)
     return r.ax
 
@@ -214,7 +220,7 @@ class ROC(Plot):
     -----
     .. versionadded:: 0.8.4
     """
-
+    @SKLearnEvaluationLogger.log(feature="plot", action="roc-init")
     def __init__(self, fpr, tpr, roc_rates_n_classes=None, ax=None):
 
         if ax is None:
@@ -228,62 +234,6 @@ class ROC(Plot):
 
         # if hasattr(self, "roc_rates_n_classes"):
         if roc_rates_n_classes is not None:
-            self.ax = _plot_roc_multi_classification(
-                self.fpr, self.tpr, self.roc_rates_n_classes, self.ax
-            )
-        else:
-            self.ax = _plot_roc(self.fpr, self.tpr, ax)
-
-    @SKLearnEvaluationLogger.log(feature="plot", action="roc-init")
-    def o__init__(self, y_true, y_score, fpr=None, tpr=None, ax=None):
-
-        if y_true is not None and y_score is not None:
-            warn(
-                "ROC will change its signature in version 0.10"
-                ", please use ROC.from_raw_data",
-                FutureWarning,
-                stacklevel=2,
-            )
-
-        if ax is None:
-            self.figure = plt.figure()
-            ax = self.figure.add_subplot()
-
-        # check data shape?
-        if tpr is None or fpr is None:
-
-            if any((val is None for val in (y_true, y_score))):
-                raise ValueError("y_true and y_score are needed to plot ROC")
-
-            # get the number of classes based on the shape of y_score
-            y_score_is_vector = is_column_vector(y_score) or is_row_vector(y_score)
-            if y_score_is_vector:
-                n_classes = 2
-            else:
-                _, n_classes = y_score.shape
-
-            if n_classes > 2:
-                # convert y_true to binary format
-                y_true_bin = label_binarize(y_true, classes=np.unique(y_true))
-
-                fpr, tpr, _ = _roc_curve_multi(y_true_bin, y_score)
-                self.roc_rates_n_classes = []
-                for i in range(n_classes):
-                    fpr_, tpr_, _ = roc_curve(y_true_bin[:, i], y_score[:, i])
-
-                    d = {"fpr": fpr_.tolist(), "tpr": tpr_.tolist()}
-                    self.roc_rates_n_classes.append(d)
-            else:
-                if y_score_is_vector:
-                    fpr, tpr, _ = roc_curve(y_true, y_score)
-                else:
-                    fpr, tpr, _ = roc_curve(y_true, y_score[:, 1])
-
-        self.fpr = fpr
-        self.tpr = tpr
-        self.ax = ax
-
-        if hasattr(self, "roc_rates_n_classes"):
             self.ax = _plot_roc_multi_classification(
                 self.fpr, self.tpr, self.roc_rates_n_classes, self.ax
             )
@@ -318,13 +268,7 @@ class ROC(Plot):
 
     @classmethod
     def from_raw_data(cls, y_true, y_score, ax=None):
-        if y_true is not None and y_score is not None:
-            warn(
-                "ROC will change its signature in version 0.10"
-                ", please use ROC.from_raw_data",
-                FutureWarning,
-                stacklevel=2,
-            )
+
         fpr, tpr, roc_rates_n_classes = cls._calculate_plotting_data(y_true, y_score)
 
         return cls(fpr, tpr, roc_rates_n_classes=roc_rates_n_classes, ax=ax)
