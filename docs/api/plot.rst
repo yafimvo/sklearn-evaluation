@@ -6,9 +6,9 @@ API allows you to quickly generate out-of-the-box plots and is the easiest to ge
 the OOP API offers more flexibility to compare models using a simple synatx, i.e, plot1 + plot2; 
 or to customize the style and elements in the plot.
 
-
+===================
 Object Oriented API
--------------------
+===================
 
 
 ConfusionMatrix
@@ -34,9 +34,9 @@ Rank2D
     :members: feature_ranks, feature_ranks_custom_algorithm
 
 
-
+==============
 Functional API
---------------
+==============
 
 
 calibration_curve
