@@ -15,16 +15,7 @@ import json
 from pathlib import Path
 from sklearn_evaluation.plot.plot import AbstractPlot, AbstractComposedPlot
 from ploomber_core.exceptions import modify_exceptions
-import matplotlib as mpl
-
-
-def _set_default_plot_colors():
-    a_material_ui_colors = ['#2196F3', '#E91E63', '#4CAF50',
-                            '#9C27B0', '#F44336', '#FF9800', '#009688', '#00BCD4']
-
-    _material_ui_colors = ['#00B0FF', '#F50057', '#00C853',
-                           '#D500F9', '#F44336', '#FF9100', '#00BFA5', '#651FFF']
-    mpl.rcParams['axes.prop_cycle'] = mpl.cycler(color=_material_ui_colors)
+from sklearn_evaluation.plot.style import apply_theme
 
 
 def _check_data_inputs(y_true, y_score) -> None:
@@ -204,23 +195,10 @@ def roc(y_true, y_score, ax=None):
 
 
 def _set_ax_settings(ax):
-
-    # ax.plot([0, 1], [0, 1], 'k:')
     ax.plot([0, 1], [0, 1], color='#000', linewidth=1, alpha=0.1)
-
-    ax.set_xlim([0.0, 1.0])
-    ax.set_ylim([0.0, 1.005])
     ax.set_xlabel("False Positive Rate")
     ax.set_ylabel("True Positive Rate")
     ax.set_title("ROC")
-    # ax.legend(loc="best")
-
-    plt.legend(loc=(1.05, 0.5))
-
-    ax.spines[['right', 'top']].set_visible(False)
-    ax.tick_params(right=False, top=False)
-    # ax.tick_params(left=False, bottom=False)
-    # ax.grid(True, linestyle='-.', linewidth=1, alpha=0.5, color='#c6c6c6')
 
 
 def _roc_curve_multi(y_true, y_score):
@@ -303,12 +281,13 @@ class ROCAdd(AbstractComposedPlot):
         self.a = a
         self.b = b
 
+    @apply_theme
     def plot(self, ax=None):
         a = self.a
         b = self.b
 
         if ax is None:
-            _set_default_plot_colors()
+            # _set_default_plot_colors()
             _, ax = plt.subplots()
 
         _generate_plot_from_fpr_tpr_lists(a.fpr, a.tpr, ax, label=a.label)
@@ -416,7 +395,9 @@ class ROC(AbstractPlot):
     @SKLearnEvaluationLogger.log(feature="plot", action="roc-add")
     def __add__(self, other):
         roc_add_result = ROCAdd(self, other)
+
         roc_add_result.plot()
+
         return roc_add_result
 
     def _get_data(self):
@@ -436,9 +417,10 @@ class ROC(AbstractPlot):
             "tpr": tpr,
         }
 
+    @apply_theme
     def plot(self, ax=None):
         if ax is None:
-            _set_default_plot_colors()
+            # _set_default_plot_colors()
             _, ax = plt.subplots()
 
         _generate_plot_from_fpr_tpr_lists(self.fpr, self.tpr, ax, label=self.label)
