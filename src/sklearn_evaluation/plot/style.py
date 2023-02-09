@@ -1,6 +1,5 @@
 from contextlib import contextmanager
 import matplotlib.pyplot as plt
-from sklearn_evaluation import __version__
 import matplotlib as mpl
 
 
