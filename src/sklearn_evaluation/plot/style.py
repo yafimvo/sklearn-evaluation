@@ -31,4 +31,5 @@ def _set_default_ax_style():
     ax.set_ylim([0.0, 1.005])
     ax.legend(loc="best", fontsize='10')
     ax.spines[['right', 'top']].set_visible(False)
+
     ax.tick_params(right=False, top=False)
