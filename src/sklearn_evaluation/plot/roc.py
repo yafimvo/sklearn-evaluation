@@ -194,7 +194,7 @@ def roc(y_true, y_score, ax=None):
     return r.ax
 
 
-def _set_ax_settings(ax):
+def _set_custom_ax_settings(ax):
     ax.plot([0, 1], [0, 1], color='#000', linewidth=1, alpha=0.1)
     ax.set_xlabel("False Positive Rate")
     ax.set_ylabel("True Positive Rate")
@@ -239,7 +239,7 @@ def _plot_roc(fpr, tpr, ax, label=None, linestyle=None):
     ax.plot(fpr, tpr, label=(f"{label} (area = {roc_auc:0.2f})"),
             linestyle=linestyle, linewidth=1)
 
-    _set_ax_settings(ax)
+    _set_custom_ax_settings(ax)
     return ax
 
 
