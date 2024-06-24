@@ -21,7 +21,7 @@ def _check_data_inputs(y_true, y_score) -> None:
     """
     Checks if data inputs are valid and supported for generating ROC with sklearn
 
-    Parameters
+    Parameters 
     ----------
     y_true : array-like, shape = [n_samples]
         Correct target values (ground truth).
